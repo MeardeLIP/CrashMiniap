@@ -1,0 +1,802 @@
+.top-bar {
+  position: relative;
+  z-index: 10;
+  flex-shrink: 0;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: transparent;
+  color: #ffffff;
+  font-size: 14px;
+}
+
+.top-bar-left,
+.top-bar-right {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* --- Размеры плашки онлайна: padding, font-size (ячейка без мерцания) --- */
+.online-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 13px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.2);
+  box-shadow: none;
+  color: #f97316;
+  font-size: 15px;
+}
+
+/* Мерцают только иконка и цифры (вместе), не ячейка */
+.online-indicator-glow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  animation: onlineBlink 2.8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* --- Размер иконки человечка (SVG): width, height --- */
+.online-indicator-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  color: inherit;
+}
+
+.online-indicator-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.online-indicator-value {
+  font-weight: 700;
+}
+
+/* --- Размеры плашки баланса (TON + цифры): padding, font-size, gap --- */
+.balance-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.2);
+  border: none;
+  font-size: 15px;
+}
+
+.balance-chip-amount {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 700;
+}
+
+/* --- Размер иконки TON (yellowton.png): width, height --- */
+.balance-gem {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  object-fit: contain;
+  display: block;
+}
+
+@keyframes onlineBlink {
+  0%, 100% {
+    opacity: 0.7;
+    filter: drop-shadow(0 0 2px rgba(249, 115, 22, 0.3));
+  }
+  50% {
+    opacity: 1;
+    filter: drop-shadow(0 0 8px rgba(249, 115, 22, 0.9)) drop-shadow(0 0 20px rgba(249, 115, 22, 0.6));
+  }
+}
+
+/* --- Размер кнопки "+" у баланса: width, height, font-size --- */
+.balance-plus {
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  background: #ffffff;
+  color: #020617;
+}
+
+.crash-screen {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  background: transparent;
+  position: relative;
+  z-index: 0;
+  width: 100%;
+}
+
+.game-shell {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  border-radius: 24px 24px 0 0;
+  background: #0f1014;
+}
+
+.game-shell-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.game-shell-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse 120% 60% at 50% 20%, transparent 0%, rgba(0, 0, 0, 0.15) 80%);
+}
+
+.game-shell-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  isolation: isolate;
+}
+
+/* Верхняя половина (видео + ракета). overflow: visible — чтобы иксы и зайчика можно было перетащить вверх */
+.crash-space {
+  flex: 1 0 auto;
+  position: relative;
+  overflow: visible;
+  min-height: 0;
+}
+
+.space-stars {
+  display: none;
+}
+
+/* Слой с перетаскиваемыми множителем и зайчиком (Alt + мышь), позиции в localStorage */
+.crash-draggable-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.crash-multiplier-anchor {
+  position: absolute;
+  left: 50%;
+  top: 12%;
+  transform: translate(-50%, 0);
+  pointer-events: auto;
+  z-index: 2;
+}
+
+.crash-rocket-anchor {
+  position: absolute;
+  left: 50%;
+  top: 42%;
+  transform: translate(-50%, -50%);
+  width: 240px;
+  height: 240px;
+  pointer-events: auto;
+  z-index: 1;
+}
+
+.crash-draggable-inner {
+  cursor: default !important;
+  user-select: none;
+  -webkit-user-select: none;
+  pointer-events: auto;
+}
+
+.crash-draggable-inner:active {
+  cursor: default !important;
+}
+
+.crash-draggable-inner--rocket {
+  width: 100%;
+  height: 100%;
+  pointer-events: auto;
+}
+
+.crash-draggable-layer .multiplier-wrapper {
+  height: auto;
+}
+
+.multiplier-wrapper {
+  position: relative;
+  z-index: 2;
+  height: 52%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  color: #ffffff;
+}
+
+.multiplier-value {
+  font-weight: 700;
+  font-size: 80px;
+  letter-spacing: 0.03em;
+  text-shadow: 0 0 30px rgba(255, 137, 0, 0.6);
+}
+
+.multiplier-label {
+  margin-top: 4px;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.rocket-layer {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none;
+}
+
+.rocket-wrapper {
+  position: relative;
+  width: 220px;
+  height: 220px;
+  transform-origin: center;
+  transform: translateY(calc(-40px + 20px * (1 - var(--rocket-height, 0))));
+  transition: transform 0.2s ease-out;
+}
+
+/* Эффект полёта: след сзади ракеты */
+.rocket-trail {
+  position: absolute;
+  left: -42px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 48px;
+  height: 80px;
+  pointer-events: none;
+  z-index: -1;
+}
+.rocket-trail__glow {
+  position: absolute;
+  inset: -8px -4px -8px 0;
+  background: radial-gradient(
+    ellipse 60% 80% at 100% 50%,
+    rgba(255, 180, 100, 0.35),
+    rgba(249, 115, 22, 0.15),
+    transparent 70%
+  );
+  filter: blur(6px);
+  animation: rocketTrailPulse 0.6s ease-in-out infinite alternate;
+}
+.rocket-trail__line {
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  width: 28px;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 200, 150, 0.5),
+    rgba(249, 115, 22, 0.2),
+    transparent
+  );
+  transform: translateY(-50%);
+  border-radius: 2px;
+  filter: blur(0.5px);
+  animation: rocketTrailLine 0.4s ease-out infinite;
+}
+.rocket-trail__line--2 {
+  top: 35%;
+  width: 22px;
+  opacity: 0.7;
+  animation-delay: 0.08s;
+}
+.rocket-trail__line--3 {
+  top: 65%;
+  width: 18px;
+  opacity: 0.5;
+  animation-delay: 0.16s;
+}
+@keyframes rocketTrailPulse {
+  from { opacity: 0.8; transform: scaleX(0.95); }
+  to { opacity: 1; transform: scaleX(1); }
+}
+@keyframes rocketTrailLine {
+  from { opacity: 0.4; transform: translateY(-50%) scaleX(0.3); }
+  to { opacity: 0.9; transform: translateY(-50%) scaleX(1); }
+}
+
+.rocket-body {
+  width: 100%;
+  height: 100%;
+  transform-origin: center;
+  position: relative;
+  z-index: 1;
+}
+
+.rocket-bunny-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 18px 30px rgba(0, 0, 0, 0.9));
+}
+
+/* Движение картинки вперёд при полёте */
+.rocket-bunny-image--flying {
+  animation: rocketFlyForward 1.2s ease-in-out infinite;
+}
+
+@keyframes rocketFlyForward {
+  0% {
+    transform: translateX(0) scale(1);
+  }
+  40% {
+    transform: translateX(12px) scale(1.02);
+  }
+  100% {
+    transform: translateX(0) scale(1);
+  }
+}
+
+.rocket-floating {
+  animation: rocketFloat 3s ease-in-out infinite alternate;
+}
+
+@keyframes rocketFloat {
+  0% {
+    transform: rotate(-4deg);
+  }
+  50% {
+    transform: rotate(5deg);
+  }
+  100% {
+    transform: rotate(-3deg);
+  }
+}
+
+.rocket-shake {
+  animation: rocketShake 0.35s ease-in-out;
+}
+
+@keyframes rocketShake {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  25% {
+    transform: translate(-4px, 0) rotate(-4deg);
+  }
+  50% {
+    transform: translate(4px, -2px) rotate(4deg);
+  }
+  75% {
+    transform: translate(-3px, 1px) rotate(-2deg);
+  }
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+}
+
+/* Меню над видео: ряд иксов + кнопка ставки */
+.crash-video-menu {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 12px 12px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent);
+  pointer-events: none;
+  overflow-x: hidden;
+  z-index: 5;
+}
+.crash-video-menu > * {
+  pointer-events: auto;
+}
+
+/* Перетаскиваемый блок: от этой точки всё идёт, сам блок не смещается кроме как при перетаскивании; смещаются только иксы внутри */
+.crash-video-menu__draggable {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+  touch-action: none;
+  width: 100%;
+  max-width: 100%;
+  cursor: default !important;
+}
+.crash-video-menu__draggable:active {
+  cursor: default !important;
+}
+
+/* Ряд иксов: на всю ширину блока, старые значения уходят за правый край */
+.recent-multipliers-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  gap: 6px;
+  padding: 0 4px 6px;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  width: 100%;
+  max-width: 100%;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.recent-multipliers-row::-webkit-scrollbar {
+  display: none;
+}
+
+.recent-multiplier-pill {
+  flex-shrink: 0;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  background: rgba(0, 0, 0, 0.35);
+  color: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.recent-multiplier-pill--primary {
+  background: linear-gradient(135deg, #fb923c, #ea580c);
+  color: #ffffff;
+  font-weight: 600;
+  border-color: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 0 12px rgba(249, 115, 22, 0.4);
+}
+
+/* Нижний блок (серая панель). Высота фиксирована — меняй height (например 42vh сделает блок короче). */
+.crash-bottom-panel {
+  flex: 0 0 auto;
+  height: 45vh;
+  padding: 12px 12px 4px;
+  background: #1a1b20;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.crash-bottom-panel::-webkit-scrollbar {
+  display: none;
+}
+
+.crash-settings-button {
+  cursor: default !important;
+  position: absolute;
+  right: 18px;
+  bottom: 22px;
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  border: none;
+  background: rgba(15, 23, 42, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(148, 163, 184, 0.95);
+  font-size: 18px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+}
+
+.bet-panel {
+  margin-bottom: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.bet-status-label {
+  font-size: 12px;
+  color: rgba(249, 115, 22, 0.85);
+  margin-bottom: 4px;
+}
+
+.bet-amount-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.bet-amount-input {
+  flex: 1;
+  background: rgba(7, 10, 20, 0.9);
+  border-radius: 12px;
+  padding: 8px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 13px;
+}
+
+.bet-amount-input-value {
+  color: #ffffff;
+}
+
+.bet-amount-input-label {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.bet-main-button {
+  width: 100%;
+  padding: 14px 20px;
+  border-radius: 999px;
+  border: none;
+  font-size: 16px;
+  font-weight: 600;
+  background: linear-gradient(135deg, #fb923c, #ea580c);
+  color: #ffffff;
+  box-shadow: 0 12px 30px rgba(249, 115, 22, 0.45);
+  cursor: pointer;
+}
+
+.bet-main-button:disabled {
+  opacity: 0.7;
+  cursor: default;
+  box-shadow: none;
+}
+
+/* «Ожидание» — синяя кнопка, хорошо видимый приятный текст */
+.bet-main-button--waiting {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: #ffffff;
+  opacity: 1;
+}
+
+.bet-main-button--waiting:disabled {
+  opacity: 1;
+}
+
+/* Кнопка «Забрать» — зелёная, акцент на выигрыш */
+.bet-main-button--secondary {
+  background: linear-gradient(135deg, #34d399, #10b981);
+  box-shadow: 0 12px 30px rgba(16, 185, 129, 0.5);
+}
+
+.players-list {
+  margin-top: 8px;
+  padding: 8px 4px 4px;
+  background: transparent; /* без отдельного подблока, как «Ожидание ставок» */
+  border-radius: 0;
+  max-height: 120px;
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.players-list::-webkit-scrollbar {
+  display: none;
+}
+
+/* Пустое состояние: без отдельного покрытия, только надпись по центру.
+   Чтобы опустить текст ниже — увеличь padding-top у .players-list--empty (ниже). */
+.players-list--empty {
+  background: transparent;
+  min-height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 140px 12px 12px; /* верхний отступ: больше значение = текст ниже */
+}
+
+.players-list--empty .players-list-empty {
+  font-size: 12px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.85);
+  letter-spacing: 0.03em;
+  text-shadow: 0 0 12px rgba(255, 255, 255, 0.25),
+               0 0 24px rgba(255, 255, 255, 0.12);
+}
+
+/* Строка ставки: без отдельной плашки, просто на общем фоне панели */
+.player-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 4px;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.player-main {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.player-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #fb923c, #ea580c);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 700;
+  color: #1c1917;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.player-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.player-ton-icon {
+  width: 16px;
+  height: 16px;
+  vertical-align: middle;
+  margin-right: 4px;
+}
+
+.player-ton-icon--payout {
+  width: 24px;
+  height: 24px;
+  margin-right: 6px;
+}
+
+.player-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.player-name {
+  font-weight: 600;
+  color: #fff;
+}
+
+.player-sub {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.75);
+  display: inline-flex;
+  align-items: center;
+}
+
+.player-sub-mul {
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 12px;
+  margin-left: 4px;
+}
+
+.player-payout {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.player-payout-amount {
+  font-weight: 700;
+  font-size: 18px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.player-payout-amount--win {
+  color: #4ade80;
+}
+
+.player-payout-amount--loss {
+  color: #f97373;
+}
+
+
+.bottom-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 8px 0 10px;
+  background: #14151a;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.bottom-nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  font-size: 11px;
+  color: rgba(148, 163, 184, 0.9);
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.bottom-nav-item-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f5f5f7;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.45);
+  position: relative;
+  overflow: visible;
+}
+
+.bottom-nav-item-icon img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  filter: none;
+}
+
+.bottom-nav-item-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  position: relative;
+  -webkit-text-stroke: 0.4px rgba(255, 255, 255, 0.4);
+}
+
+.bottom-nav-item--active {
+  color: #f97316;
+}
+
+/* Сдвиг влево/вправо: меняй 0px на 15px (вправо) или -15px (влево) */
+.bottom-nav-item--active .bottom-nav-item-icon {
+  border-color: transparent;
+  background: transparent; /* без белого поля — только ракета */
+  box-shadow: none;
+  transform: translateX(5px);
+}
+
+.bottom-nav-item--active .bottom-nav-item-icon img {
+  width: 70px;
+  height: 70px;
+}
+
+/* Свечение сзади иконки убрано — без пятна */
+.bottom-nav-item--active .bottom-nav-item-icon::before {
+  display: none;
+}
+
+/* Буквы «Краш» — тот же серый и стиль, что Топ и Профиль */
+.bottom-nav-item--active .bottom-nav-item-label {
+  color: rgba(148, 163, 184, 0.9);
+  text-shadow: none;
+}
+
+/* Полоска под текстом — белая */
+.bottom-nav-item--active .bottom-nav-item-label::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -4px;
+  transform: translateX(-50%);
+  width: 140%;
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.6) 20%, rgba(255, 255, 255, 0.9) 50%, rgba(255, 255, 255, 0.6) 80%, transparent 100%);
+  opacity: 1;
+  pointer-events: none;
+  box-shadow: 0 0 4px rgba(255, 255, 255, 0.5);
+}
+
