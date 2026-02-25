@@ -25,7 +25,9 @@ app.get("/", (_req, res) => {
 });
 
 // Обрабатываем данные из WebApp (Telegram.WebApp.sendData)
-bot.on("message", async (ctx) => {
+// ВАЖНО: после обработки web_app_data вызываем next(),
+// чтобы другие хендлеры (например, /start) тоже отработали.
+bot.on("message", async (ctx, next) => {
   const anyMsg = ctx.message as any;
   const webAppData = anyMsg?.web_app_data;
 
@@ -43,23 +45,32 @@ bot.on("message", async (ctx) => {
       console.error("Failed to parse web_app_data", e);
     }
   }
+
+  // Пропускаем апдейт дальше по цепочке middlewares
+  return next();
 });
 
-// Команда /start с кнопкой для открытия миниапки
+// Логируем любые текстовые сообщения, чтобы убедиться, что апдейты доходят
+// и при этом не блокируем другие хендлеры (как /start)
+bot.on("text", (ctx, next) => {
+  console.log("TEXT UPDATE:", ctx.chat.id, ctx.message.text);
+  return next();
+});
+
+// Команда /start с кнопкой \"Play\" под сообщением (inline-клавиатура, как у GiftUp)
 bot.start((ctx) => {
   ctx.reply("Запускаем краш-игру 🚀", {
     reply_markup: {
-      keyboard: [
+      inline_keyboard: [
         [
           {
-            text: "Открыть игру",
+            text: "🚀 Play",
             web_app: {
-              url: "https://MeardelIP.github.io/CrashMiniap/"
+              url: "https://meardelip.github.io/CrashMiniap/"
             }
           }
         ]
-      ],
-      resize_keyboard: true
+      ]
     }
   });
 });
@@ -68,6 +79,14 @@ const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, async () => {
   console.log(`Backend listening on port ${PORT}`);
+
+  // Всегда сначала очищаем старый webhook, чтобы Telegram начал слать апдейты заново
+  try {
+    await bot.telegram.deleteWebhook({ drop_pending_updates: false });
+    console.log("Old webhook deleted (if it existed)");
+  } catch (e) {
+    console.warn("Failed to delete old webhook:", e);
+  }
 
   const publicUrl = process.env.PUBLIC_URL;
   if (publicUrl) {
