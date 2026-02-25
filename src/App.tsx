@@ -11,7 +11,7 @@ export const App: React.FC = () => {
         <div className="game-shell">
           <video
             className="game-shell-video"
-            src="/kosmos.mp4"
+            src={`${import.meta.env.BASE_URL}kosmos.mp4`}
             autoPlay
             muted
             loop
