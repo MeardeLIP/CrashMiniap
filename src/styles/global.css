@@ -40,7 +40,8 @@ body {
   width: 100%;
   max-width: 430px;
   height: 100%;
-  max-height: 900px;
+  /* растягиваем телефон по высоте на всю доступную область */
+  max-height: 100%;
   background: #02030b;
   border-radius: 32px;
   overflow: hidden;
