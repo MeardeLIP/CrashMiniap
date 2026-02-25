@@ -1,3 +1,4 @@
+import "dotenv/config";
 import express from "express";
 import { Telegraf } from "telegraf";
 
@@ -75,7 +76,9 @@ app.listen(PORT, async () => {
     await bot.telegram.setWebhook(webhookUrl);
     console.log("Webhook set to:", webhookUrl);
   } else {
-    console.warn("PUBLIC_URL is not set, webhook was not configured");
+    console.warn("PUBLIC_URL is not set, webhook was not configured, using long polling");
+    await bot.launch();
+    console.log("Bot started in long-polling mode");
   }
 });
 
