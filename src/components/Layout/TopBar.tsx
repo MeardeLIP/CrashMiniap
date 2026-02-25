@@ -1,6 +1,6 @@
 import React from "react";
 import { useDraggable } from "../../hooks/useDraggable";
-import yellowTonIcon from "../../yellowton.png";
+import yellowTonIcon from "../../../yellowton.png";
 
 export const TopBar: React.FC = () => {
   const onlineDrag = useDraggable({ id: "topbar-online" });

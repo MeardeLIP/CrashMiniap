@@ -2,7 +2,7 @@ import React from "react";
 import type { RoundPhase } from "../../hooks/useCrashGame";
 import type { PlayerBetState } from "../../hooks/useCrashGame";
 import { useTelegramUser } from "../../hooks/useTelegramUser";
-import yellowTonIcon from "../../yellowton.png";
+import yellowTonIcon from "../../../yellowton.png";
 
 interface PlayersListProps {
   phase: RoundPhase;

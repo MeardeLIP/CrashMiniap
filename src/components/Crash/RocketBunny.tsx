@@ -1,6 +1,6 @@
 import React from "react";
 import type { CSSProperties } from "react";
-import rocketBunnyImg from "../../zaika.png";
+import rocketBunnyImg from "../../../zaika.png";
 
 type RocketBunnyProps = {
   flying: boolean;
