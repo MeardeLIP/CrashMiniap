@@ -1,6 +1,6 @@
 import React from "react";
 import topIcon from "../../winner.png";
-import crashIcon from "../../crashnew.png";
+import crashIcon from "../../zaika.png";
 import profileIcon from "../../user.png";
 
 export const BottomNav: React.FC = () => {

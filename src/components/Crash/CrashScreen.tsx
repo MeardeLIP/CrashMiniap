@@ -9,7 +9,7 @@ import { PlayersList } from "./PlayersList";
 export const CrashScreen: React.FC = () => {
   const { round, bet, history, placeBet, cashout, setBetAmount, rocketHeightProgress } =
     useCrashGame();
-  const settingsDrag = useDraggable({ id: "crash-settings" });
+  const settingsDrag = useDraggable({ id: "crash-settings", requireAlt: false });
   const videoMenuDrag = useDraggable({
     id: "crash-video-menu",
     requireAlt: false,
@@ -20,33 +20,33 @@ export const CrashScreen: React.FC = () => {
 
   return (
     <main className="crash-screen">
-      <div className="crash-space">
-        <div className="space-stars" />
-        <div className="crash-draggable-layer">
-          <div className="crash-multiplier-anchor" title="Перетащить цифры">
-            <div className="crash-draggable-inner" style={multiplierDrag.style}>
-              <MultiplierTicker
-                multiplier={round.multiplier}
-                phase={round.phase}
-                countdownSeconds={round.countdownSeconds}
-              />
-            </div>
-          </div>
-          {round.phase !== "waiting" && (
-            <div className="crash-rocket-anchor" title="Перетащить зайчика">
-              <div
-                className="crash-draggable-inner crash-draggable-inner--rocket"
-                style={rocketDrag.style}
-              >
-                <RocketBunny
-                  flying={round.phase === "running"}
-                  crashed={round.phase === "crashed"}
-                  heightProgress={rocketHeightProgress}
+        <div className="crash-space">
+          <div className="space-stars" />
+          <div className="crash-draggable-layer">
+            <div className="crash-multiplier-anchor">
+              <div className="crash-draggable-inner" style={multiplierDrag.style}>
+                <MultiplierTicker
+                  multiplier={round.multiplier}
+                  phase={round.phase}
+                  countdownSeconds={round.countdownSeconds}
                 />
               </div>
             </div>
-          )}
-        </div>
+            {round.phase !== "waiting" && (
+              <div className="crash-rocket-anchor">
+                <div
+                  className="crash-draggable-inner crash-draggable-inner--rocket"
+                  style={rocketDrag.style}
+                >
+                  <RocketBunny
+                    flying={round.phase === "running"}
+                    crashed={round.phase === "crashed"}
+                    heightProgress={rocketHeightProgress}
+                  />
+                </div>
+              </div>
+            )}
+          </div>
         <div className="crash-video-menu">
           <div
             className="crash-video-menu__draggable"

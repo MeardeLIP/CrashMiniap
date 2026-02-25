@@ -39,6 +39,13 @@ export function useDraggable(options: UseDraggableOptions): DraggableResult {
   const { id, requireAlt = true, bounds } = options;
   const [position, setPosition] = useState<Position>(() => {
     if (typeof window === "undefined") return { x: 0, y: 0 };
+
+    // Для шестерёнки всегда стартуем из дефолтной позиции,
+    // чтобы она не могла «улететь» за экран из-за старых координат.
+    if (id === "crash-settings") {
+      return { x: 0, y: 0 };
+    }
+
     try {
       const raw = window.localStorage.getItem(`crash-draggable:${id}`);
       if (!raw) return { x: 0, y: 0 };

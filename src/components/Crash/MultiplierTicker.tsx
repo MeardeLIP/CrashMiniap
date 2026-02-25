@@ -32,9 +32,17 @@ export const MultiplierTicker: React.FC<MultiplierTickerProps> = ({
     ? { color: "#ffffff", shadow: "0 0 18px rgba(255, 255, 255, 0.4)" }
     : getMultiplierColor(multiplier, isCrashed);
 
+  const valueKey = showCountdown ? `countdown-${countdownSeconds}` : `multiplier-${phase}`;
+
   return (
     <div className="multiplier-wrapper">
-      <div className="multiplier-value" style={{ color, textShadow: shadow }}>
+      <div
+        key={valueKey}
+        className={
+          "multiplier-value" + (showCountdown ? " multiplier-value--countdown" : "")
+        }
+        style={{ color, textShadow: shadow }}
+      >
         {formatted}
       </div>
     </div>
