@@ -32,7 +32,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: radial-gradient(circle at top, #101524 0, #05060a 55%, #020308 100%);
+  /* Тёмные боковые поля, в центре — окно приложения */
+  background: #05060a;
 }
 
 .app-viewport {

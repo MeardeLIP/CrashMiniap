@@ -19,6 +19,20 @@ export const BetPanel: React.FC<BetPanelProps> = ({
 }) => {
   const handleClick = () => {
     if (phase === "waiting") {
+      // Отправляем событие в Telegram WebApp (если открыто внутри ТГ)
+      try {
+        const tg = window.Telegram?.WebApp;
+        if (tg) {
+          tg.sendData(
+            JSON.stringify({
+              action: "bet",
+              amount: bet.betAmount
+            })
+          );
+        }
+      } catch {
+        // игнорируем, если Telegram недоступен
+      }
       onPlaceBet();
     } else if (phase === "running" && bet.hasBet && !bet.cashedOut) {
       onCashout();
