@@ -1,23 +1,26 @@
 import React from "react";
+import topIcon from "../winner.png";
+import crashIcon from "../crashnew.png";
+import profileIcon from "../user.png";
 
 export const BottomNav: React.FC = () => {
   return (
     <nav className="bottom-nav">
       <button type="button" className="bottom-nav-item">
         <div className="bottom-nav-item-icon">
-          <img src="/winner.png" alt="" />
+          <img src={topIcon} alt="" />
         </div>
         <span className="bottom-nav-item-label">Топ</span>
       </button>
       <button type="button" className="bottom-nav-item bottom-nav-item--active">
         <div className="bottom-nav-item-icon">
-          <img src="/newroketa.png" alt="" />
+          <img src={crashIcon} alt="" />
         </div>
         <span className="bottom-nav-item-label">Краш</span>
       </button>
       <button type="button" className="bottom-nav-item">
         <div className="bottom-nav-item-icon">
-          <img src="/user.png" alt="" />
+          <img src={profileIcon} alt="" />
         </div>
         <span className="bottom-nav-item-label">Профиль</span>
       </button>

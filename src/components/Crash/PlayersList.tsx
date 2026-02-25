@@ -2,14 +2,13 @@ import React from "react";
 import type { RoundPhase } from "../../hooks/useCrashGame";
 import type { PlayerBetState } from "../../hooks/useCrashGame";
 import { useTelegramUser } from "../../hooks/useTelegramUser";
+import yellowTonIcon from "../../yellowton.png";
 
 interface PlayersListProps {
   phase: RoundPhase;
   currentMultiplier: number;
   bet: PlayerBetState;
 }
-
-const TON_ICON = "/yellowton.png";
 
 export const PlayersList: React.FC<PlayersListProps> = ({
   phase,
@@ -54,7 +53,7 @@ export const PlayersList: React.FC<PlayersListProps> = ({
             <div className="player-meta">
               <span className="player-name">{displayName}</span>
               <span className="player-sub">
-                <img src={TON_ICON} alt="" className="player-ton-icon" />
+                <img src={yellowTonIcon} alt="" className="player-ton-icon" />
                 {bet.betAmount.toFixed(2)}
                 <span className="player-sub-mul"> ×{finishedMultiplier.toFixed(2)}</span>
               </span>
@@ -62,7 +61,11 @@ export const PlayersList: React.FC<PlayersListProps> = ({
           </div>
           <div className="player-payout">
             <div className={payoutClassName}>
-              <img src={TON_ICON} alt="" className="player-ton-icon player-ton-icon--payout" />
+              <img
+                src={yellowTonIcon}
+                alt=""
+                className="player-ton-icon player-ton-icon--payout"
+              />
               {payout != null ? payout.toFixed(2) : "—"}
             </div>
           </div>

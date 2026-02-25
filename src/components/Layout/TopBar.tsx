@@ -1,5 +1,6 @@
 import React from "react";
 import { useDraggable } from "../../hooks/useDraggable";
+import yellowTonIcon from "../../yellowton.png";
 
 export const TopBar: React.FC = () => {
   const onlineDrag = useDraggable({ id: "topbar-online" });
@@ -21,11 +22,11 @@ export const TopBar: React.FC = () => {
         </div>
       </div>
       <div className="top-bar-right">
-        <div className="balance-chip" style={balanceDrag.style}>
-          <div className="balance-chip-amount">
-            <img className="balance-gem" src="/yellowton.png" alt="" />
-            <span>0.00</span>
-          </div>
+          <div className="balance-chip" style={balanceDrag.style}>
+            <div className="balance-chip-amount">
+              <img className="balance-gem" src={yellowTonIcon} alt="" />
+              <span>0.00</span>
+            </div>
           <div className="balance-plus">+</div>
         </div>
       </div>

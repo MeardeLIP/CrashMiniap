@@ -1,5 +1,6 @@
 import React from "react";
 import type { CSSProperties } from "react";
+import rocketBunnyImg from "../../zaika.png";
 
 type RocketBunnyProps = {
   flying: boolean;
@@ -32,7 +33,7 @@ export const RocketBunny: React.FC<RocketBunnyProps> = ({ flying, crashed, heigh
         <div className={bodyClassNames}>
           <img
             className={"rocket-bunny-image" + (flying ? " rocket-bunny-image--flying" : "")}
-            src="/zaika.png"
+            src={rocketBunnyImg}
             alt=""
           />
         </div>
